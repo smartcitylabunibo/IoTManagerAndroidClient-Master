@@ -20,8 +20,8 @@
 -->
 
 <resources>
-    <!--Ristretta Android - Smart City Lab-->
-    <string name="google_android_map_api_key">AIzaSyA6Gh7-MVdPJoB8TALdWdI02fe-LXogSUc</string>
+    <!--Inserisci la tua API Key-->
+    <string name="google_android_map_api_key"></string>
 
     <string name="logo_description">IoT Manager</string>
     <string name="app_name">IoT Manager</string>
