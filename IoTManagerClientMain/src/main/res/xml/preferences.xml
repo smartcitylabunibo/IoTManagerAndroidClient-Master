@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    IoT Manager Android Client (master)
+    Copyright (C) 2017  Luca Calderoni, Antonio Magnani,
+    University of Bologna
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+<PreferenceCategory android:title="@string/settings_auth">
+<CheckBoxPreference
+   android:key="settings_login"
+   android:title="@string/settings_login"
+   android:summary="@string/settings_login_info"
+   android:defaultValue="true"/>
+<EditTextPreference
+   android:key="settings_user"
+   android:title="@string/settings_user"
+   android:summary="@string/settings_user_info"/>
+<EditTextPreference
+   android:key="settings_pwd"
+   android:title="@string/settings_pwd"
+   android:summary="@string/settings_pwd_info"
+   android:inputType="textPassword"/>
+</PreferenceCategory>
+ 
+<PreferenceCategory android:title="@string/settings_profile">
+<ListPreference
+   android:title="@string/settings_range"
+   android:summary="@string/settings_range_info"
+   android:key="settings_range"
+   android:defaultValue="10000"
+   android:entries="@array/range_array"
+   android:entryValues="@array/range_values" />
+
+<ListPreference
+   android:title="@string/settings_cities"
+   android:summary="@string/settings_cities_info"
+   android:key="settings_cities"
+   android:defaultValue="0"
+   android:entries="@array/cities_array"
+   android:entryValues="@array/cities_values" />
+
+<ListPreference
+   android:title="@string/settings_categories"
+   android:summary="@string/settings_categories_info"
+   android:key="settings_categories"
+   android:defaultValue="0"
+   android:entries="@array/categories_array"
+   android:entryValues="@array/categories_values" />
+</PreferenceCategory>
+</PreferenceScreen>
+

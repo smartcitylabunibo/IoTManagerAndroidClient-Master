@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    IoT Manager Android Client (master)
+    Copyright (C) 2017  Luca Calderoni, Antonio Magnani,
+    University of Bologna
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<resources>
+
+
+<string-array name="range_array"> 
+    <item>5 Km</item>
+    <item>10 Km</item>
+    <item>50 Km</item>
+    <item>100 Km</item>
+    <item>200 Km</item>
+</string-array>
+
+<string-array name="range_values"> 
+    <item>5000</item>
+    <item>10000</item>
+    <item>50000</item>
+    <item>100000</item>
+    <item>200000</item>
+</string-array>
+
+
+</resources>
