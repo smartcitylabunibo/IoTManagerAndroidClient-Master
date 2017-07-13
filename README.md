@@ -31,4 +31,4 @@ The source code is released under the terms of the GNU Lesser General Public Lic
 ## Acknowledgements ##
 This project relies on some existing libraries. Specifically:
 - The graphical user interface relies on the MPAndroidChart project for what concerning charts. Please refer to [the project home page](https://github.com/PhilJay/MPAndroidChart) for MPAndroidChart licence details.
-- Maps features rely on [Google Maps API v2](https://developers.google.com/maps/documentation/android-api/). In order to turn on these functionalities it is mandatory to fill the [strings.xml](res/values/strings.xml) file with a valid API Key.
+- Maps features rely on [Google Maps API v2](https://developers.google.com/maps/documentation/android-api/). In order to turn on these functionalities it is mandatory to fill the [strings.xml](/IoTManagerClientMain/src/main/res/values/strings.xml) file with a valid API Key.
