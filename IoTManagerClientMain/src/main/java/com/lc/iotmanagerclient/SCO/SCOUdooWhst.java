@@ -75,6 +75,9 @@ public class SCOUdooWhst extends SCO implements Parcelable{
 	private double[] umidita;
 	private double[] luce;
 	private double[] pressione;
+	private double[] polvere;
+	private double[] gasMQ3Ratio;
+	private String timestampRegistrazione;
 
 	private String toString;
 
@@ -97,11 +100,16 @@ public class SCOUdooWhst extends SCO implements Parcelable{
 			luce = new double[1];
 			umidita = new double[1];
 			pressione = new double[1];
+			polvere = new double[1];
+			gasMQ3Ratio = new double[1];
 
-			this.temperatura[0] = parsed_json.getJSONObject(0).getDouble("temperatura");
-			this.umidita[0] = parsed_json.getJSONObject(0).getDouble("umidita");
-			this.luce[0] = parsed_json.getJSONObject(0).getDouble("luce");
-			this.pressione[0] = parsed_json.getJSONObject(0).getDouble("pressione");
+			this.temperatura[0] = parsed_json.getJSONObject(0).getDouble("HumidityTemperature");
+			this.umidita[0] = parsed_json.getJSONObject(0).getDouble("HumidityHumidity");
+			this.luce[0] = parsed_json.getJSONObject(0).getDouble("LightSpectrum");
+			this.pressione[0] = parsed_json.getJSONObject(0).getDouble("BarometerPressure");
+			this.polvere[0] = parsed_json.getJSONObject(0).getDouble("DustConcentration");
+			this.gasMQ3Ratio[0] = parsed_json.getJSONObject(0).getDouble("GasMQ3Ratio");
+			this.timestampRegistrazione = parsed_json.getJSONObject(0).getString("GasMQ3Timestamp");
 
 			Map<String, String> fieldDetails = new LinkedHashMap<String, String>();
 			fieldDetails.put("Nome Stazione Meteo", this.nome);
@@ -149,13 +157,13 @@ public class SCOUdooWhst extends SCO implements Parcelable{
 		LinearLayout iconLayout = new LinearLayout(context);
 		iconLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 		iconLayout.setGravity(Gravity.CENTER);
-
+		/* Icon view */
 		ImageView iconView = new ImageView(context);
 		iconView.setBackground(ContextCompat.getDrawable(context, SCOUdooWhst.getIcon()));
 		iconView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 		iconLayout.addView(iconView);
 		mainView.addView(iconLayout);
-
+		/* Title  */
 		TextView tvName = new TextView(context);
 		tvName.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 		tvName.setText("UDOO-based Weather Station");
@@ -163,7 +171,7 @@ public class SCOUdooWhst extends SCO implements Parcelable{
 		tvName.setGravity(Gravity.CENTER);
 		tvName.setTextColor(ContextCompat.getColor(context, R.color.Gold));
 		mainView.addView(tvName);
-
+		/* Details */
 		TextView tvDetails = new TextView(context);
 		tvDetails.setPadding(15, 10, 0, 0);
 		tvDetails.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -171,7 +179,7 @@ public class SCOUdooWhst extends SCO implements Parcelable{
 		tvDetails.setTextSize(18f);
 		tvDetails.setTextColor(ContextCompat.getColor(context,R.color.White));
 		mainView.addView(tvDetails);
-
+		/* Status */
 		TextView tvStatus = new TextView(context);
 		tvStatus.setPadding(15, 10, 0, 0);
 		tvStatus.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -183,12 +191,22 @@ public class SCOUdooWhst extends SCO implements Parcelable{
 			tvStatus.setTextColor(ContextCompat.getColor(context,R.color.Red));
 		}
 		mainView.addView(tvStatus);
+		/* Last update */
+		TextView tvTimeStamp = new TextView(context);
+		tvTimeStamp.setPadding(15, 10, 0, 0);
+		tvTimeStamp.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+		tvTimeStamp.setText("Last update: " + this.timestampRegistrazione);
+		tvTimeStamp.setTextColor(ContextCompat.getColor(context,R.color.White));
+		tvTimeStamp.setTextSize(18f);
+		mainView.addView(tvTimeStamp);
 
-		LinearLayout graphLayout = new LinearLayout(context);
-		graphLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-		graphLayout.setGravity(Gravity.CENTER);
-		graphLayout.setOrientation(LinearLayout.HORIZONTAL);
-		graphLayout.setBackgroundColor(Color.WHITE);
+		/* GRAPH LAYOUT */
+		/* 1st Line (Temperature, Humidity, Pressure) */
+		LinearLayout graphLayout_firstLine = new LinearLayout(context);
+		graphLayout_firstLine.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+		graphLayout_firstLine.setGravity(Gravity.CENTER);
+		graphLayout_firstLine.setOrientation(LinearLayout.HORIZONTAL);
+		graphLayout_firstLine.setBackgroundColor(Color.WHITE);
 
 		LinearLayout.LayoutParams one = new LinearLayout.LayoutParams(0, (int) DisplayConvertionUtility.convertDpToPixel(420f, context));
 		one.topMargin = (int) DisplayConvertionUtility.convertDpToPixel(15, context);
@@ -205,34 +223,66 @@ public class SCOUdooWhst extends SCO implements Parcelable{
 		three.bottomMargin = (int) DisplayConvertionUtility.convertDpToPixel(15, context);
 		three.weight = 1f;
 
+		BarChart temperature = new BarChart(context);
+		temperature.setLayoutParams(one);
+
+		BarChart humidity = new BarChart(context);
+		humidity.setLayoutParams(two);
+
+		BarChart pressure = new BarChart(context);
+		pressure.setLayoutParams(three);
+		/* End 1st Line*/
+
+		/* 2nd Line (Light, Dust, Gas) */
+		LinearLayout graphLayout_secondLine = new LinearLayout(context);
+		graphLayout_secondLine.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+		graphLayout_secondLine.setGravity(Gravity.CENTER);
+		graphLayout_secondLine.setOrientation(LinearLayout.HORIZONTAL);
+		graphLayout_secondLine.setBackgroundColor(Color.WHITE);
+
 		LinearLayout.LayoutParams four = new LinearLayout.LayoutParams(0, (int) DisplayConvertionUtility.convertDpToPixel(420f, context));
 		four.topMargin = (int) DisplayConvertionUtility.convertDpToPixel(15, context);
 		four.bottomMargin = (int) DisplayConvertionUtility.convertDpToPixel(15, context);
 		four.weight = 1f;
 
-		BarChart temperature = new BarChart(context);
-		temperature.setLayoutParams(one);
+		LinearLayout.LayoutParams five = new LinearLayout.LayoutParams(0, (int) DisplayConvertionUtility.convertDpToPixel(420f, context));
+		five.topMargin = (int) DisplayConvertionUtility.convertDpToPixel(15, context);
+		five.bottomMargin = (int) DisplayConvertionUtility.convertDpToPixel(15, context);
+		five.weight = 1f;
 
-		BarChart pressure = new BarChart(context);
-		pressure.setLayoutParams(two);
+		LinearLayout.LayoutParams six = new LinearLayout.LayoutParams(0, (int) DisplayConvertionUtility.convertDpToPixel(420f, context));
+		six.topMargin = (int) DisplayConvertionUtility.convertDpToPixel(15, context);
+		six.bottomMargin = (int) DisplayConvertionUtility.convertDpToPixel(15, context);
+		six.weight = 1f;
 
 		BarChart light = new BarChart(context);
-		light.setLayoutParams(three);
+		light.setLayoutParams(four);
 
-		BarChart humidity = new BarChart(context);
-		humidity.setLayoutParams(four);
+		BarChart dust = new BarChart(context);
+		dust.setLayoutParams(five);
+
+		BarChart gas = new BarChart(context);
+		gas.setLayoutParams(six);
+		/*End 2nd Line*/
 
 		CreateTemperatureChart(temperature, temperatura);
-		CreatePressureChart(pressure, pressione);
-		CreateLightChart(light, luce);
 		CreateHumidityChart(humidity, umidita);
+		CreatePressureChart(pressure, pressione);
 
-		graphLayout.addView(temperature);
-		graphLayout.addView(pressure);
-		graphLayout.addView(light);
-		graphLayout.addView(humidity);
+		CreateLightChart(light, luce);
+		CreateDustChart(dust, polvere);
+		CreateGasChart(gas, gasMQ3Ratio);
 
-		mainView.addView(graphLayout);
+		graphLayout_firstLine.addView(temperature);
+		graphLayout_firstLine.addView(pressure);
+		graphLayout_firstLine.addView(humidity);
+
+		graphLayout_secondLine.addView(light);
+		graphLayout_secondLine.addView(dust);
+		graphLayout_secondLine.addView(gas);
+
+		mainView.addView(graphLayout_firstLine);
+		mainView.addView(graphLayout_secondLine);
 
 		ScrollView root = new ScrollView(context);
 		root.addView(mainView);
@@ -373,6 +423,28 @@ public class SCOUdooWhst extends SCO implements Parcelable{
 		}
 	}
 
+	class DustFormatter implements  IAxisValueFormatter {
+		private DecimalFormat mFormat;
+
+		public DustFormatter() { mFormat = new DecimalFormat("####.##");}
+
+		@Override
+		public String getFormattedValue(float value, AxisBase axis) {
+			return mFormat.format(value) + " Pcs/Lt";
+		}
+	}
+
+	class GasFormatter implements  IAxisValueFormatter {
+		private DecimalFormat mFormat;
+
+		public GasFormatter() { mFormat = new DecimalFormat("###.##");}
+
+		@Override
+		public String getFormattedValue(float value, AxisBase axis) {
+			return mFormat.format(value) + " RS/R0";
+		}
+	}
+
 	class HygroFormatter implements IAxisValueFormatter {
 
 		private DecimalFormat mFormat;
@@ -407,13 +479,13 @@ public class SCOUdooWhst extends SCO implements Parcelable{
 		List<String> labels = new ArrayList<>();
 
 		if(temperature[0]>=0) {
-			graph.getAxisLeft().setAxisMaximum(85);
+			graph.getAxisLeft().setAxisMaximum(55);
 			graph.getAxisLeft().setAxisMinimum(0);
 		}
 		else
 		{
 			graph.getAxisLeft().setAxisMaximum(0);
-			graph.getAxisLeft().setAxisMinimum(-40);
+			graph.getAxisLeft().setAxisMinimum(-30);
 		}
 
 		for (int i=0; i<temperature.length; i++) {
@@ -422,7 +494,17 @@ public class SCOUdooWhst extends SCO implements Parcelable{
 		}
 
 		BarDataSet dataSet = new BarDataSet(entries,"temp");
-		dataSet.setColor(Color.RED);
+
+		if (isBetween((int) temperature[0],20, 24))
+			dataSet.setColor(Color.rgb(178,255,102));
+		else if (isBetween((int) temperature[0], 25, 29))
+			dataSet.setColor(Color.rgb(255,178,102));
+		else if (temperature[0] > 30)
+			dataSet.setColor(Color.rgb(255,102,102));
+		else if (isBetween((int) temperature[0], 15, 19))
+			dataSet.setColor(Color.rgb(153,255,204));
+		else if (temperature[0] < 15)
+			dataSet.setColor(Color.rgb(102,178,255));
 
 		BarData barData = new BarData(dataSet);
 		barData.setBarWidth(0.9f);
@@ -462,8 +544,13 @@ public class SCOUdooWhst extends SCO implements Parcelable{
 		List<BarEntry> entries = new ArrayList<>();
 		List<String> labels = new ArrayList<>();
 
-		graph.getAxisLeft().setAxisMaximum(1100);
-		graph.getAxisLeft().setAxisMinimum(200);
+		graph.getAxisLeft().setAxisMaximum(1500);
+		graph.getAxisLeft().setAxisMinimum(500);
+
+		float tempMaxValue = 1300;
+
+		if (tempMaxValue >= graph.getAxisLeft().getAxisMaximum())
+			graph.getAxisLeft().setAxisMaximum((float) (tempMaxValue + 0.5 * tempMaxValue));
 
 		for (int i=0; i<pressure.length; i++) {
 			entries.add(new BarEntry(i,10*(float)pressure[i]));
@@ -471,7 +558,8 @@ public class SCOUdooWhst extends SCO implements Parcelable{
 		}
 
 		BarDataSet dataSet = new BarDataSet(entries,"baro");
-		dataSet.setColor(Color.GREEN);
+		if (pressure[0] < 80) dataSet.setColor(Color.rgb(153,204,255));
+		else dataSet.setColor(Color.rgb(255,102,102));
 
 		BarData barData = new BarData(dataSet);
 		barData.setBarWidth(0.9f);
@@ -521,7 +609,10 @@ public class SCOUdooWhst extends SCO implements Parcelable{
 		}
 
 		BarDataSet dataSet = new BarDataSet(entries,"lux");
-		dataSet.setColor(Color.YELLOW);
+
+		if (temperature[0] < 200 )
+			dataSet.setColor(Color.rgb(255,228,116));
+		else dataSet.setColor(Color.rgb(255,255,102));
 
 		BarData barData = new BarData(dataSet);
 		barData.setBarWidth(0.9f);
@@ -557,20 +648,22 @@ public class SCOUdooWhst extends SCO implements Parcelable{
 
 	}
 
-	private void CreateHumidityChart(BarChart graph, double[] temperature) {
+	private void CreateHumidityChart(BarChart graph, double[] humidity) {
 		List<BarEntry> entries = new ArrayList<>();
 		List<String> labels = new ArrayList<>();
 
 		graph.getAxisLeft().setAxisMaximum(100);
 		graph.getAxisLeft().setAxisMinimum(0);
 
-		for (int i=0; i<temperature.length; i++) {
-			entries.add(new BarEntry(i,(float)temperature[i]));
+		for (int i=0; i<humidity.length; i++) {
+			entries.add(new BarEntry(i,(float)humidity[i]));
 			labels.add("SI 7006 A20");
 		}
 
 		BarDataSet dataSet = new BarDataSet(entries,"hygro");
-		dataSet.setColor(Color.BLUE);
+		if (humidity[0] < 50)
+			dataSet.setColor(Color.rgb(102,255,102));
+		else dataSet.setColor(Color.rgb(255,178,102));
 
 		BarData barData = new BarData(dataSet);
 		barData.setBarWidth(0.9f);
@@ -605,9 +698,109 @@ public class SCOUdooWhst extends SCO implements Parcelable{
 		graph.invalidate();
 
 	}
+	private void CreateGasChart(BarChart graph ,double[] gas) {
+		List<BarEntry> entries = new ArrayList<>();
+		List<String> labels = new ArrayList<>();
+
+		graph.getAxisLeft().setAxisMaximum(100);
+		graph.getAxisLeft().setAxisMinimum(0);
+
+		for (int i=0; i < gas.length; i++) {
+			entries.add(new BarEntry(i,(float)gas[i]));
+			labels.add("Grove GASMQ3");
+		}
+
+		BarDataSet dataSet = new BarDataSet(entries,"gas");
+		dataSet.setColor(Color.rgb(173,216,230));
+
+		BarData barData = new BarData(dataSet);
+		barData.setBarWidth(0.9f);
+		graph.setData(barData);
+
+		/** Imposta la descrizione del grafico (libreria default, in basso a destra)*/
+		graph.getDescription().setText("Gas");
+		graph.getDescription().setTextSize(12);
+		YAxis yleft = graph.getAxisLeft();
+		XAxis xAxis = graph.getXAxis();
+
+		yleft.setValueFormatter(new GasFormatter());
+		yleft.setTextSize(12);
+		yleft.setGranularity(1f);
+		yleft.setDrawGridLines(false);
+
+		xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+		xAxis.setValueFormatter(new StringsValueFormatter(labels));
+		xAxis.setTextSize(12);
+		xAxis.setGranularity(1);
+		xAxis.setDrawGridLines(false);
+		xAxis.setDrawLabels(true);
+
+		/** Impostazione griglia ed etichette assi */
+		graph.setFitBars(true);
+		graph.setAutoScaleMinMaxEnabled(true);
+		graph.setDrawGridBackground(true);
+		graph.getAxisRight().setDrawLabels(false);
+
+		/** Refresh del grafico*/
+		graph.getLegend().setEnabled(false);
+		graph.invalidate();
+	}
+
+	private void CreateDustChart(BarChart graph ,double[] polvere) {
+		List<BarEntry> entries = new ArrayList<>();
+		List<String> labels = new ArrayList<>();
+
+		graph.getAxisLeft().setAxisMaximum((float)(polvere[0] + polvere[0] * 0.5));
+		graph.getAxisLeft().setAxisMinimum(0);
+
+		for (int i=0; i < polvere.length; i++) {
+			entries.add(new BarEntry(i,(float)polvere[i]));
+			labels.add("Grove Dust");
+		}
+
+		BarDataSet dataSet = new BarDataSet(entries,"dust");
+		dataSet.setColor(Color.rgb(102,102,255));
+
+		BarData barData = new BarData(dataSet);
+		barData.setBarWidth(0.9f);
+		graph.setData(barData);
+
+		/** Imposta la descrizione del grafico (libreria default, in basso a destra)*/
+		graph.getDescription().setText("Polvere");
+		graph.getDescription().setTextSize(12);
+		YAxis yleft = graph.getAxisLeft();
+		XAxis xAxis = graph.getXAxis();
+
+		yleft.setValueFormatter(new DustFormatter());
+		yleft.setTextSize(12);
+		yleft.setGranularity(1f);
+		yleft.setDrawGridLines(false);
+
+		xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+		xAxis.setValueFormatter(new StringsValueFormatter(labels));
+		xAxis.setTextSize(12);
+		xAxis.setGranularity(1);
+		xAxis.setDrawGridLines(false);
+		xAxis.setDrawLabels(true);
+
+		/** Impostazione griglia ed etichette assi */
+		graph.setFitBars(true);
+		graph.setAutoScaleMinMaxEnabled(true);
+		graph.setDrawGridBackground(true);
+		graph.getAxisRight().setDrawLabels(false);
+
+		/** Refresh del grafico*/
+		graph.getLegend().setEnabled(false);
+		graph.invalidate();
+	}
+
 
 	/**
 	 *  FINE CODICE PER L'UTILIZZO DELLA LIBRERIA MPAndroidChart
 	 */
+
+	public static boolean isBetween(int x, int lower, int upper) {
+		return lower <= x && x <= upper;
+	}
 
 }
