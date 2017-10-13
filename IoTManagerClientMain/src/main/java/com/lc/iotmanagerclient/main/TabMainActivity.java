@@ -139,6 +139,10 @@ public class TabMainActivity extends FragmentActivity implements
 	// Oggetto di dettaglio
 	SCO oggetto;
 
+	// Flag di supporto per gestire l'avvio automatico della richiesta oggetti a seguito
+	// dell'inserimento dei parametri di login alla prima connessione
+	private boolean firstConnection = false;
+
 	/**
 	 * Creazione dell'activity. Viene subito richiesto il bind al service che
 	 * fornisce i dati critici quali l'attuale posizione geografica e i dati
@@ -355,12 +359,21 @@ public class TabMainActivity extends FragmentActivity implements
 						}
 					}
 
-					if(pf.isSelectedCityChanged()){
+					// Blocco eseguito solo a seguito di inserimento credenziali di login alla prima
+					// connessione
+					if(firstConnection){
+						firstConnection = false;
+						msg = Message.obtain(null,DBManagerService.MSG_GET_OBJ_LIST, id, 0);
+						mService.send(msg);
+					}
+					// Blocco eseguito nel caso sia variata la città selezionata nelle preferences
+					else if(pf.isSelectedCityChanged()){
 						msg = Message.obtain(null, DBManagerService.MSG_GET_CITY,
 									id, 0);
 						msg.replyTo = mMessenger;
 						mService.send(msg);
 					}
+					// Blocco eseguito nel caso sia variato il raggio d'azione nelle preferences
 					else if(pf.isSelectedRangeChanged()){
 						// Richiede una lista di sensori da mostrare
 						msg = Message.obtain(null,
@@ -936,7 +949,7 @@ public class TabMainActivity extends FragmentActivity implements
 				TabMainActivity.this.CITIES_VALUES = b
 						.getCharSequenceArray("CitiesValuesList");
 				break;
-			//Con questo messaggio il service segnala di avere ricevuto a
+			// Con questo messaggio il service segnala di avere ricevuto a
 			// disposizione delle coordinate geografiche aggiornate, che vengono
 			// passate nel messaggio. L'activity quindi chiama un metodo di
 			// aggiornamento delle distanze su tutti gli oggetti che ha in lista
@@ -1086,6 +1099,7 @@ public class TabMainActivity extends FragmentActivity implements
 					}
 				
 				} else {
+					firstConnection = true;
 					Intent intentSettings = new Intent(getApplicationContext(),
 							SettingsActivity.class);
 					startActivity(intentSettings);
