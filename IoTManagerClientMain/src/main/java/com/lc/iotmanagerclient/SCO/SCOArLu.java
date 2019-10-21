@@ -27,9 +27,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -145,8 +146,12 @@ public class SCOArLu extends SCO implements Parcelable, View.OnClickListener{
 		iconLayout.setGravity(Gravity.CENTER);
 		
 		ImageView iconView = new ImageView(context);
-		iconView.setBackground(ContextCompat.getDrawable(context, SCOArLu.getIcon()));
-
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+			iconView.setBackground(ContextCompat.getDrawable(context, SCOArLu.getIcon()));
+		}
+		else {
+			iconView.setBackgroundDrawable(ContextCompat.getDrawable(context, SCOArLu.getIcon()));
+		}
 		if (status != 0) iconView.setImageResource(R.drawable.ic_error_status);
 		iconView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 		iconLayout.addView(iconView);

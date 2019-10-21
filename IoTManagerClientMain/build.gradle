@@ -2,18 +2,15 @@ apply plugin: 'com.android.application'
 
 android {
 
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 29
+    buildToolsVersion "29.0.0"
     defaultConfig {
         applicationId "com.lc.iotmanagerclient"
-        minSdkVersion 16
-        targetSdkVersion 25
+        minSdkVersion 15
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
-        jackOptions {
-            enabled false
-        }
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_7
             targetCompatibility JavaVersion.VERSION_1_7
@@ -30,11 +27,11 @@ android {
 }
 
 dependencies {
-    compile files('libs/commons-codec-1.4.jar')
-    compile files('libs/commons-logging-1.1.1.jar')
-    compile 'com.google.android.gms:play-services-maps:10.2.4'
-    compile 'com.google.android.gms:play-services-location:10.2.4'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation files('libs/commons-codec-1.4.jar')
+    implementation files('libs/commons-logging-1.1.1.jar')
+    implementation 'com.google.android.gms:play-services-maps:10.2.4'
+    implementation 'com.google.android.gms:play-services-location:10.2.4'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 }

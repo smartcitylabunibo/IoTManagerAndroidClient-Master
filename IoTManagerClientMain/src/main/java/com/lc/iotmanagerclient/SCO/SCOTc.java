@@ -31,9 +31,10 @@ import org.json.JSONException;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -161,14 +162,19 @@ public class SCOTc extends SCO implements Parcelable{
 	public View createView(Context context){
 		
 		LinearLayout mainView = new LinearLayout(context);
-		mainView.setOrientation(android.widget.LinearLayout.VERTICAL);
+		mainView.setOrientation(LinearLayout.VERTICAL);
 		
 		LinearLayout iconLayout = new LinearLayout(context);
 		iconLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 		iconLayout.setGravity(Gravity.CENTER);
 		
 		ImageView iconView = new ImageView(context);
-		iconView.setBackground(ContextCompat.getDrawable(context, SCOTc.getIcon()));
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+			iconView.setBackground(ContextCompat.getDrawable(context, SCOTc.getIcon()));
+		}
+		else {
+			iconView.setBackgroundDrawable(ContextCompat.getDrawable(context, SCOTc.getIcon()));
+		}
 		iconView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 		iconLayout.addView(iconView);
 		mainView.addView(iconLayout);

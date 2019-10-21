@@ -27,9 +27,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -127,7 +128,7 @@ public class SCOLamp extends SCO implements Parcelable{
 	public View createView(Context context){
 		
 		LinearLayout mainView = new LinearLayout(context);
-		mainView.setOrientation(android.widget.LinearLayout.VERTICAL);
+		mainView.setOrientation(LinearLayout.VERTICAL);
 		mainView.setWeightSum(1.0f);
 		
 		LinearLayout iconLayout = new LinearLayout(context);
@@ -135,7 +136,12 @@ public class SCOLamp extends SCO implements Parcelable{
 		iconLayout.setGravity(Gravity.CENTER);
 		
 		ImageView iconView = new ImageView(context);
-		iconView.setBackground(ContextCompat.getDrawable(context, SCOLamp.getIcon()));
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+			iconView.setBackground(ContextCompat.getDrawable(context, SCOLamp.getIcon()));
+		}
+		else {
+			iconView.setBackgroundDrawable(ContextCompat.getDrawable(context, SCOLamp.getIcon()));
+		}
 		if (stato != 0) iconView.setImageResource(R.drawable.ic_error_status);
 		iconView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 		iconLayout.addView(iconView);

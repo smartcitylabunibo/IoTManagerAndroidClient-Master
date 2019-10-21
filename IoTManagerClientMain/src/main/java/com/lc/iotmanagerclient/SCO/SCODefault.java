@@ -25,9 +25,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,7 +99,7 @@ public class SCODefault extends SCO implements Parcelable{
 		
 		
 		LinearLayout mainView = new LinearLayout(context);
-		mainView.setOrientation(android.widget.LinearLayout.VERTICAL);
+		mainView.setOrientation(LinearLayout.VERTICAL);
 		mainView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 		mainView.setWeightSum(1.0f);
 		
@@ -107,7 +108,12 @@ public class SCODefault extends SCO implements Parcelable{
 		iconLayout.setGravity(Gravity.CENTER);
 		
 		ImageView iconView = new ImageView(context);
-		iconView.setBackground(ContextCompat.getDrawable(context, SCODefault.getIcon()));
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+			iconView.setBackground(ContextCompat.getDrawable(context, SCODefault.getIcon()));
+		}
+		else {
+			iconView.setBackgroundDrawable(ContextCompat.getDrawable(context, SCODefault.getIcon()));
+		}
 		iconView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 		iconLayout.addView(iconView);
 		mainView.addView(iconLayout);

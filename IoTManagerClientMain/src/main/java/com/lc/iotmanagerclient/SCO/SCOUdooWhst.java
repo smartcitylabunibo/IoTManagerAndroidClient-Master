@@ -28,9 +28,10 @@ import java.util.Map.Entry;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -159,7 +160,12 @@ public class SCOUdooWhst extends SCO implements Parcelable{
 		iconLayout.setGravity(Gravity.CENTER);
 		/* Icon view */
 		ImageView iconView = new ImageView(context);
-		iconView.setBackground(ContextCompat.getDrawable(context, SCOUdooWhst.getIcon()));
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+			iconView.setBackground(ContextCompat.getDrawable(context, SCOUdooWhst.getIcon()));
+		}
+		else {
+			iconView.setBackgroundDrawable(ContextCompat.getDrawable(context, SCOUdooWhst.getIcon()));
+		}
 		iconView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 		iconLayout.addView(iconView);
 		mainView.addView(iconLayout);
