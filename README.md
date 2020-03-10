@@ -19,10 +19,10 @@ The IoTManagerAndroidClient-Student repository contains a limited version of the
 
 ## Bibliography ##
 IoT Manager was designed and proposed throughout several original research papers:
-- Luca Calderoni, Antonio Magnani, Dario Maio: *IoT Manager: an open-source IoT framework for smart cities*, Journal of Systems Architecture, vol. 98, pp. 413-423, 2019. ISSN 1383-7621.
-- Luca Calderoni, Antonio Magnani, Dario Maio: *IoT Manager: a Case Study of the Design and Implementation of an Open Source IoT Platform*, IEEE 5th World Forum on Internet of Things (WF-IoT), IEEE, pp. 749-754, 2019.
-- Luca Calderoni, Dario Maio, Stefano Rovis: *Deploying a network of smart cameras for traffic monitoring on a “city kernel”.* Expert Systems with Applications, vol. 41, pp. 502-507, February 2014. ISSN 0957-4174.
+- Luca Calderoni, Antonio Magnani, Dario Maio: *IoT Manager: an open-source IoT framework for smart cities*. Journal of Systems Architecture, vol. 98, pp. 413-423, 2019. ISSN 1383-7621.
+- Luca Calderoni, Antonio Magnani, Dario Maio: *IoT Manager: a Case Study of the Design and Implementation of an Open Source IoT Platform*. Proceedings of the IEEE 5th World Forum on Internet of Things (WF-IoT), IEEE, pp. 749-754, 2019.
 - Luca Calderoni, Antonio Magnani, Dario Maio: *Coupling a UDOO-based weather station with IoT Manager*. I-Cities 2017. Proceedings of the 3rd Italian Conference on ICT for Smart Cities & Communities, September 2017.
+- Luca Calderoni, Dario Maio, Stefano Rovis: *Deploying a network of smart cameras for traffic monitoring on a “city kernel”*. Expert Systems with Applications, vol. 41, pp. 502-507, February 2014. ISSN 0957-4174.
 
 ## Authors ##
 Luca Calderoni, Antonio Magnani - Università di Bologna (Italy)
